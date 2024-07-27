@@ -1,0 +1,29 @@
+{
+  "name": "beg-battle-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon",
+    "server": "nodemon src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "fastify": "^4.28.1",
+    "heroku": "^8.7.1",
+    "mongoose": "^8.5.1"
+  },
+  "devDependencies": {
+    "@types/fastify-cors": "^2.1.0",
+    "@types/node": "^20.14.12",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
