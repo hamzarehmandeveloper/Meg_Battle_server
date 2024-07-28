@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema({
   language_code: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   coins: { type: Number, required: false, default: 0 },
+  referredBy: { type: String },
+  referrals: { type: [String], default: [] },
 });
 const User = mongoose.model('Users', userSchema, 'Users');
 export { User };
