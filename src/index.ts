@@ -57,7 +57,7 @@ async function trackReferral(
       first_name,
       last_name,
       language_code,
-      points: 50,
+      coins: 50,
       referredBy: referrerId,
       referrals: [],
     });
