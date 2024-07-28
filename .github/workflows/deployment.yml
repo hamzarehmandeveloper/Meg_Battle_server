@@ -1,9 +1,9 @@
-name: Deployment On main Environment
+name: Deployment On stage Environment
 
 on:
   push:
     branches:
-      - 'main'
+      - 'stage'
 jobs:
   deploy:
     name: Deploy for backend
@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: SSH To server
+      - name: SSH To stage server
         env:
           PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           HOSTNAME: ${{ secrets.SSH_HOST }}
