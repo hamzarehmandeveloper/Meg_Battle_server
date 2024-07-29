@@ -8,7 +8,7 @@ import { User } from './models/userModel';
 
 dotenv.config();
 
-const token = '7362145024:AAHnXNfEx7DZvIlGUwMr7ZTyFusOA_z2iFU';
+const token = '7405864910:AAFyrcKkly8Jt8IlUgQO-L6-FyubNnZ9eCQ';
 const bot = new TelegramBot(token, { polling: true });
 
 const server = fastify({ logger: true });
@@ -57,7 +57,7 @@ async function trackReferral(
       first_name,
       last_name,
       language_code,
-      coins: 50,
+      coins: 5000,
       referredBy: referrerId,
       referrals: [],
     });
@@ -72,7 +72,7 @@ async function trackReferral(
     if (!referrer.referrals.includes(newUserId)) {
       await User.updateOne(
         { id: referrerId },
-        { $inc: { points: 100 }, $push: { referrals: newUserId } }
+        { $inc: { points: 5000 }, $push: { referrals: newUserId } }
       );
       bot.sendMessage(
         referrerId,
