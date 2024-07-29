@@ -66,6 +66,12 @@ async function trackReferral(
       newUserId,
       'You have received 5000 points for joining through a referral!'
     );
+  } else {
+    bot.sendMessage(
+      referrerId,
+      'The user you referred is already a participant.'
+    );
+    return;
   }
 
   if (referrer) {
