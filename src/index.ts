@@ -64,7 +64,7 @@ async function trackReferral(
     await newUserData.save();
     bot.sendMessage(
       newUserId,
-      'You have received 50 points for joining through a referral!'
+      'You have received 5000 points for joining through a referral!'
     );
   }
 
@@ -72,11 +72,11 @@ async function trackReferral(
     if (!referrer.referrals.includes(newUserId)) {
       await User.updateOne(
         { id: referrerId },
-        { $inc: { points: 5000 }, $push: { referrals: newUserId } }
+        { $inc: { coins: 5000 }, $push: { referrals: newUserId } }
       );
       bot.sendMessage(
         referrerId,
-        'You have received 100 points for referring a new user!'
+        'You have received 5000 points for referring a new user!'
       );
     } else {
       bot.sendMessage(referrerId, 'You have already referred this user.');
