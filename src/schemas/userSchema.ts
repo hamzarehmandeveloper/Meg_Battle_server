@@ -5,7 +5,7 @@ export const registerUserSchema: FastifySchema = {
     type: 'object',
     required: ['id', 'first_name', 'language_code'],
     properties: {
-      id: { type: 'string' },
+      id: { type: 'number' },
       first_name: { type: 'string' },
       last_name: { type: 'string' },
       language_code: { type: 'string' },
@@ -17,7 +17,7 @@ export const addCoinsSchema: FastifySchema = {
   params: {
     type: 'object',
     properties: {
-      id: { type: 'string' },
+      id: { type: 'number' },
     },
     required: ['id'],
   },

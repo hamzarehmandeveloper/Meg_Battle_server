@@ -7,7 +7,7 @@ export async function registerUser(
 ) {
   try {
     const { id, first_name, last_name, language_code } = request.body as {
-      id: string;
+      id: number;
       first_name: string;
       last_name: string | null;
       language_code: string;
@@ -38,7 +38,7 @@ export async function registerUser(
 }
 
 export async function addCoinsToUser(
-  request: FastifyRequest<{ Params: { id: string }; Body: { coins: number } }>,
+  request: FastifyRequest<{ Params: { id: number }; Body: { coins: number } }>,
   reply: FastifyReply
 ) {
   try {
