@@ -7,7 +7,7 @@ export async function registerUser(
 ) {
   try {
     const { id, first_name, last_name, language_code } = request.body as {
-      id: number;
+      id: string;
       first_name: string;
       last_name: string | null;
       language_code: string;
