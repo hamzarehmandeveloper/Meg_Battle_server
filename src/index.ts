@@ -94,7 +94,9 @@ const start = async () => {
   try {
     await server.listen({ port: 3001, host: '0.0.0.0' });
     const address = server.server.address();
-    server.log.info(`Server is running at http://localhost:${address}`);
+    server.log.info(
+      `Server is running at http://localhost:${address?.toString()}`
+    );
   } catch (err) {
     server.log.error(err);
     process.exit(1);
