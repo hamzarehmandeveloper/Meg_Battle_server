@@ -45,16 +45,13 @@ export async function addCoinsToUser(
     const { id } = request.params;
     const { coins } = request.body;
 
-    console.log(id);
-    console.log(coins);
-
     const user = await User.findOne({ $or: [{ id }] });
 
     if (!user) {
       return reply.status(404).send({ error: 'User not found' });
     }
 
-    user.coins = (user.coins ?? 0) + coins;
+    user.coins = coins;
     await user.save();
 
     reply.status(200).send({ message: 'Coins added successfully', user });
