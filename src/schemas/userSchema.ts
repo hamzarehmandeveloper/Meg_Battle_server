@@ -29,3 +29,43 @@ export const addCoinsSchema: FastifySchema = {
     required: ['coins'],
   },
 };
+
+export const getUserReferralsSchema: FastifySchema = {
+  params: {
+    type: 'object',
+    properties: {
+      userId: { type: 'number' },
+    },
+    required: ['userId'],
+  },
+  response: {
+    200: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'number' },
+          first_name: { type: 'string' },
+          last_name: { type: 'string' },
+          language_code: { type: 'string' },
+          createdAt: { type: 'string', format: 'date-time' },
+          coins: { type: 'number' },
+          referredBy: { type: 'string' },
+          referrals: { type: 'array', items: { type: 'string' } },
+        },
+      },
+    },
+    404: {
+      type: 'object',
+      properties: {
+        error: { type: 'string' },
+      },
+    },
+    500: {
+      type: 'object',
+      properties: {
+        error: { type: 'string' },
+      },
+    },
+  },
+};

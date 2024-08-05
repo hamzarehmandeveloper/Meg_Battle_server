@@ -1,6 +1,14 @@
 import { FastifyInstance } from 'fastify';
-import { addCoinsToUser, registerUser } from '../controllers/userController';
-import { addCoinsSchema, registerUserSchema } from '../schemas/userSchema';
+import {
+  addCoinsToUser,
+  getUserReferrals,
+  registerUser,
+} from '../controllers/userController';
+import {
+  addCoinsSchema,
+  getUserReferralsSchema,
+  registerUserSchema,
+} from '../schemas/userSchema';
 
 export default function userRoutes(
   fastify: FastifyInstance,
@@ -30,5 +38,18 @@ export default function userRoutes(
     },
     addCoinsToUser
   );
+
+  fastify.get(
+    '/referrals/:userId',
+    {
+      schema: getUserReferralsSchema,
+      onRequest: (request, reply, done) => {
+        reply.header('Access-Control-Allow-Origin', '*');
+        done();
+      },
+    },
+    getUserReferrals
+  );
+
   done();
 }

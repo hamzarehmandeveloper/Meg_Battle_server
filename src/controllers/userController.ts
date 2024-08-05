@@ -63,3 +63,30 @@ export async function addCoinsToUser(
     reply.status(500).send({ error: 'Internal server error' });
   }
 }
+
+export const getUserReferrals = async (
+  request: FastifyRequest<{ Params: { userId: number } }>,
+  reply: FastifyReply
+) => {
+  try {
+    const { userId } = request.params;
+    const user = await User.findOne({ id: userId });
+    if (!user) {
+      return reply.status(404).send({ error: 'User not found' });
+    }
+
+    console.log(user.referrals);
+
+    const referralIds = user.referrals.map((referralId: string) => {
+      return { id: referralId };
+    });
+
+    const referrals = await User.find({
+      id: { $in: referralIds.map((referral) => referral.id) },
+    });
+
+    reply.send(referrals);
+  } catch (err) {
+    reply.status(500).send({ error: 'Failed to fetch referrals' });
+  }
+};
