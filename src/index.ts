@@ -25,6 +25,13 @@ server.get('/', async (request, reply) => {
 
 server.register(userRoutes, { prefix: '/api/users' });
 
+bot.onText(/\/start/, (msg) => {
+  bot.sendMessage(
+    msg.chat.id,
+    `Hi, ${msg.chat.first_name} 👋. Welcome to the MegBattle bot! 🐒 To start the game, simply click play button below. 👇🏼`
+  );
+});
+
 bot.onText(/\/start (.+)/, async (msg: any, match: any) => {
   const referrerId = match[1];
   const newUserId = msg.from.id;
