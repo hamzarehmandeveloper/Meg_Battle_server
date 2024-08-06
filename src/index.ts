@@ -73,6 +73,36 @@ bot.onText(/\/updateTitle/, async (msg) => {
   }
 });
 
+
+async function notifyUsers() {
+  try {
+    // Fetch all user IDs from the Users collection
+    const users = await User.find({}, 'id');
+    
+    // Iterate over each user and send a message
+    for (const user of users) {
+      const chatId = user.id;
+      await bot.sendMessage(chatId, 'Please type /start to begin the game.');
+    }
+    
+    console.log('Messages sent to all users.');
+  } catch (error) {
+    console.error('Error notifying users:', error);
+  }
+}
+
+bot.onText(/\/notify/, async (msg) => {
+  const chatId = msg.chat.id;
+  const isAdmin = 7071294131; 
+  
+  if (isAdmin) {
+    await notifyUsers();
+    bot.sendMessage(chatId, 'All users have been notified to type /start.');
+  } else {
+    bot.sendMessage(chatId, 'You do not have permission to run this command.');
+  }
+});
+
 // const updateInterval = 3600000; // 1 hour in milliseconds
 
 // setInterval(async () => {
