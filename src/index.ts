@@ -35,12 +35,11 @@ bot.onText(/\/start/, (msg) => {
 });
 
 async function getSubscriberCount() {
-  if (mongooseClient) {
-    const db = mongooseClient.connection.db;
-    const count = await db.collection('Users').countDocuments();
+  try {
+    const count = await User.countDocuments({});
     return count;
-  } else {
-    throw new Error('MongoDB client is not connected');
+  } catch (error: any) {
+    throw new Error('Error counting documents: ' + error.message);
   }
 }
 
