@@ -1,10 +1,12 @@
-import mongoose from 'mongoose';
+// database/db.ts
+import mongoose, { Mongoose } from 'mongoose';
+
+let client: Mongoose | null = null;
 
 export const connectDB = async () => {
   try {
-    await mongoose.connect(
+    client = await mongoose.connect(
       'mongodb+srv://hamza:hamza@cluster0.zcbj6k5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-
       {
         dbName: 'MegBattle',
       }
@@ -15,3 +17,5 @@ export const connectDB = async () => {
     process.exit(1);
   }
 };
+
+export const getClient = (): Mongoose | null => client;

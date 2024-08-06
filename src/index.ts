@@ -1,12 +1,14 @@
 import fastify from 'fastify';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
-import { connectDB } from './database/db';
+import { connectDB, getClient } from './database/db';
 import cors from '@fastify/cors';
 import TelegramBot from 'node-telegram-bot-api';
 import { User } from './models/userModel';
 
 dotenv.config();
+
+const mongooseClient = getClient();
 
 const token = '7405864910:AAFyrcKkly8Jt8IlUgQO-L6-FyubNnZ9eCQ';
 const bot = new TelegramBot(token, { polling: true });
@@ -30,6 +32,25 @@ bot.onText(/\/start/, (msg) => {
     msg.chat.id,
     `Hi, ${msg.chat.first_name} 👋. Welcome to the MegBattle bot! 🐒 To start the game, simply click play button below. 👇🏼`
   );
+});
+
+async function getSubscriberCount() {
+  if (mongooseClient) {
+    const db = mongooseClient.connection.db;
+    const count = await db.collection('Users').countDocuments();
+    return count;
+  } else {
+    throw new Error('MongoDB client is not connected');
+  }
+}
+
+bot.onText(/\/subscribers/, async (msg) => {
+  try {
+    const count = await getSubscriberCount();
+    bot.sendMessage(msg.chat.id, `We have ${count} subscribers!`);
+  } catch (err) {
+    bot.sendMessage(msg.chat.id, 'Error fetching subscriber count');
+  }
 });
 
 bot.onText(/\/start (.+)/, async (msg: any, match: any) => {
@@ -99,7 +120,7 @@ async function trackReferral(
 
 const start = async () => {
   try {
-    await server.listen({ port: 3001, host: '0.0.0.0' });
+    await server.listen({ port: 3002, host: '0.0.0.0' });
     const address = server.server.address();
     server.log.info(
       `Server is running at http://localhost:${address?.toString()}`
