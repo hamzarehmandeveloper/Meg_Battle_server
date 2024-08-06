@@ -10,7 +10,7 @@ dotenv.config();
 
 const mongooseClient = getClient();
 
-const token = '7405864910:AAFyrcKkly8Jt8IlUgQO-L6-FyubNnZ9eCQ';
+const token = '7020739932:AAHY9kS08BuFzx-qBxe7gFQEm73PClq2xfk';
 const bot = new TelegramBot(token, { polling: true });
 
 const server = fastify({ logger: true });
@@ -34,74 +34,44 @@ bot.onText(/\/start/, (msg) => {
   );
 });
 
-async function getSubscriberCount() {
-  try {
-    const count = await User.countDocuments({});
-    return count;
-  } catch (error: any) {
-    throw new Error('Error counting documents: ' + error.message);
-  }
-}
+// async function getSubscriberCount() {
+//   try {
+//     const count = await User.countDocuments({});
+//     return count;
+//   } catch (error: any) {
+//     throw new Error('Error counting documents: ' + error.message);
+//   }
+// }
 
-async function updateChatTitle(chatId: number) {
-  try {
-    const count = await getSubscriberCount();
-    const newTitle = `${count} Users`;
-    await bot.setChatTitle(chatId, newTitle);
-    console.log(`Chat title updated to: ${newTitle}`);
-  } catch (error: any) {
-    console.error('Failed to update chat title:', error);
-  }
-}
+// async function updateChatTitle(chatId: number) {
+//   try {
+//     const count = await getSubscriberCount();
+//     const newTitle = `${count} Users`;
+//     await bot.setChatTitle(chatId, newTitle);
+//     console.log(`Chat title updated to: ${newTitle}`);
+//   } catch (error: any) {
+//     console.error('Failed to update chat title:', error);
+//   }
+// }
 
-bot.onText(/\/subscribers/, async (msg) => {
-  try {
-    const count = await getSubscriberCount();
-    bot.sendMessage(msg.chat.id, `We have ${count} subscribers!`);
-  } catch (err) {
-    bot.sendMessage(msg.chat.id, 'Error fetching subscriber count');
-  }
-});
+// bot.onText(/\/subscribers/, async (msg) => {
+//   try {
+//     const count = await getSubscriberCount();
+//     bot.sendMessage(msg.chat.id, `We have ${count} subscribers!`);
+//   } catch (err) {
+//     bot.sendMessage(msg.chat.id, 'Error fetching subscriber count');
+//   }
+// });
 
-bot.onText(/\/updateTitle/, async (msg) => {
-  try {
-    const chatId = 7071294131;
-    await updateChatTitle(chatId);
-    bot.sendMessage(chatId, 'Chat title updated!');
-  } catch (err) {
-    bot.sendMessage(msg.chat.id, 'Error updating chat title');
-  }
-});
-
-
-async function notifyUsers() {
-  try {
-    // Fetch all user IDs from the Users collection
-    const users = await User.find({}, 'id');
-    
-    // Iterate over each user and send a message
-    for (const user of users) {
-      const chatId = user.id;
-      await bot.sendMessage(chatId, 'Please type /start to begin the game.');
-    }
-    
-    console.log('Messages sent to all users.');
-  } catch (error) {
-    console.error('Error notifying users:', error);
-  }
-}
-
-bot.onText(/\/notify/, async (msg) => {
-  const chatId = msg.chat.id;
-  const isAdmin = 7071294131; 
-  
-  if (isAdmin) {
-    await notifyUsers();
-    bot.sendMessage(chatId, 'All users have been notified to type /start.');
-  } else {
-    bot.sendMessage(chatId, 'You do not have permission to run this command.');
-  }
-});
+// bot.onText(/\/updateTitle/, async (msg) => {
+//   try {
+//     const chatId = 1637005489;
+//     await updateChatTitle(chatId);
+//     bot.sendMessage(7071294131, 'Chat title updated!');
+//   } catch (err) {
+//     bot.sendMessage(msg.chat.id, 'Error updating chat title');
+//   }
+// });
 
 // const updateInterval = 3600000; // 1 hour in milliseconds
 
