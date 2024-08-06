@@ -65,7 +65,7 @@ bot.onText(/\/subscribers/, async (msg) => {
 
 bot.onText(/\/updateTitle/, async (msg) => {
   try {
-    const chatId = msg.chat.id;
+    const chatId = 7071294131;
     await updateChatTitle(chatId);
     bot.sendMessage(chatId, 'Chat title updated!');
   } catch (err) {
