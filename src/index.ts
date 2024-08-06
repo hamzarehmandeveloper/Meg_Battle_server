@@ -85,7 +85,7 @@ bot.onText(/\/subscribers/, async (msg) => {
     }
 
     const message = `
-      @stage_meg_battle_bot
+      @@MEGBattlebot
 
       Bot Status:
       Total Users: ${count}👤
