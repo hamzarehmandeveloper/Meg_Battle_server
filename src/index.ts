@@ -78,7 +78,7 @@ bot.onText(/\/subscribers/, async (msg) => {
 
     if (
       userId !== 1637005489 &&
-      userId !== 11040739270 &&
+      userId !== 1040739270 &&
       userId !== 7071294131
     ) {
       return;
