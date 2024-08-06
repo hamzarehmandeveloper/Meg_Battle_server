@@ -43,6 +43,17 @@ async function getSubscriberCount() {
   }
 }
 
+async function updateChatTitle(chatId: number) {
+  try {
+    const count = await getSubscriberCount();
+    const newTitle = `${count} Users`;
+    await bot.setChatTitle(chatId, newTitle);
+    console.log(`Chat title updated to: ${newTitle}`);
+  } catch (error: any) {
+    console.error('Failed to update chat title:', error);
+  }
+}
+
 bot.onText(/\/subscribers/, async (msg) => {
   try {
     const count = await getSubscriberCount();
@@ -51,6 +62,27 @@ bot.onText(/\/subscribers/, async (msg) => {
     bot.sendMessage(msg.chat.id, 'Error fetching subscriber count');
   }
 });
+
+bot.onText(/\/updateTitle/, async (msg) => {
+  try {
+    const chatId = msg.chat.id;
+    await updateChatTitle(chatId);
+    bot.sendMessage(chatId, 'Chat title updated!');
+  } catch (err) {
+    bot.sendMessage(msg.chat.id, 'Error updating chat title');
+  }
+});
+
+// const updateInterval = 3600000; // 1 hour in milliseconds
+
+// setInterval(async () => {
+//   try {
+//     const chatId = YOUR_CHAT_ID;
+//     await updateChatTitle(chatId);
+//   } catch (error) {
+//     console.error('Error updating chat title at interval:', error);
+//   }
+// }, updateInterval);
 
 bot.onText(/\/start (.+)/, async (msg: any, match: any) => {
   const referrerId = match[1];
@@ -119,7 +151,7 @@ async function trackReferral(
 
 const start = async () => {
   try {
-    await server.listen({ port: 3002, host: '0.0.0.0' });
+    await server.listen({ port: 3001, host: '0.0.0.0' });
     const address = server.server.address();
     server.log.info(
       `Server is running at http://localhost:${address?.toString()}`

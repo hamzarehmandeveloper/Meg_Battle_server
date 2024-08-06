@@ -18,7 +18,8 @@
     "fastify": "^4.28.1",
     "heroku": "^8.7.1",
     "mongoose": "^8.5.1",
-    "node-telegram-bot-api": "^0.66.0"
+    "node-telegram-bot-api": "^0.66.0",
+    "telegraf": "^4.16.3"
   },
   "devDependencies": {
     "@types/fastify-cors": "^2.1.0",
