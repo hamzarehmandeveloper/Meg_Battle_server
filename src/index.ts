@@ -10,7 +10,7 @@ dotenv.config();
 
 const mongooseClient = getClient();
 
-const token = '7020739932:AAHY9kS08BuFzx-qBxe7gFQEm73PClq2xfk';
+const token = '7405864910:AAFyrcKkly8Jt8IlUgQO-L6-FyubNnZ9eCQ';
 const bot = new TelegramBot(token, { polling: true });
 
 const server = fastify({ logger: true });
@@ -34,55 +34,69 @@ bot.onText(/\/start/, (msg) => {
   );
 });
 
-// async function getSubscriberCount() {
-//   try {
-//     const count = await User.countDocuments({});
-//     return count;
-//   } catch (error: any) {
-//     throw new Error('Error counting documents: ' + error.message);
-//   }
-// }
+async function getSubscriberCount() {
+  try {
+    const count = await User.countDocuments({});
+    return count;
+  } catch (error: any) {
+    throw new Error('Error counting documents: ' + error.message);
+  }
+}
 
-// async function updateChatTitle(chatId: number) {
+// async function isUserAdmin(chatId: number, userId: number) {
 //   try {
-//     const count = await getSubscriberCount();
-//     const newTitle = `${count} Users`;
-//     await bot.setChatTitle(chatId, newTitle);
-//     console.log(`Chat title updated to: ${newTitle}`);
-//   } catch (error: any) {
-//     console.error('Failed to update chat title:', error);
-//   }
-// }
-
-// bot.onText(/\/subscribers/, async (msg) => {
-//   try {
-//     const count = await getSubscriberCount();
-//     bot.sendMessage(msg.chat.id, `We have ${count} subscribers!`);
-//   } catch (err) {
-//     bot.sendMessage(msg.chat.id, 'Error fetching subscriber count');
-//   }
-// });
-
-// bot.onText(/\/updateTitle/, async (msg) => {
-//   try {
-//     const chatId = 1637005489;
-//     await updateChatTitle(chatId);
-//     bot.sendMessage(7071294131, 'Chat title updated!');
-//   } catch (err) {
-//     bot.sendMessage(msg.chat.id, 'Error updating chat title');
-//   }
-// });
-
-// const updateInterval = 3600000; // 1 hour in milliseconds
-
-// setInterval(async () => {
-//   try {
-//     const chatId = YOUR_CHAT_ID;
-//     await updateChatTitle(chatId);
+//     const member = await bot.getChatMember(chatId, userId);
+//     return member.status === 'creator' || member.status === 'administrator';
 //   } catch (error) {
-//     console.error('Error updating chat title at interval:', error);
+//     console.error('Error fetching chat member:', error);
+//     return false;
 //   }
-// }, updateInterval);
+// }
+
+bot.onText(/\/check/, (msg) => {
+  const chatId = msg.chat.id;
+  const userId = msg?.from?.id;
+
+  if (!userId) {
+    return;
+  }
+
+  bot.getChatMember(chatId, userId).then((member) => {
+    if (member.status === 'creator' || member.status === 'administrator') {
+      bot.sendMessage(chatId, 'You are an admin!');
+    } else {
+      bot.sendMessage(chatId, 'You are not an admin.');
+    }
+  });
+});
+
+bot.onText(/\/subscribers/, async (msg) => {
+  try {
+    const count = await getSubscriberCount();
+    const chatId = msg.chat.id;
+    const userId = msg?.from?.id;
+
+    if (
+      userId !== 1637005489 &&
+      userId !== 11040739270 &&
+      userId !== 7071294131
+    ) {
+      return;
+    }
+
+    const message = `
+      @stage_meg_battle_bot
+
+      Bot Status:
+      Total Users: ${count}👤
+    `.trim();
+
+    bot.sendMessage(chatId, message);
+  } catch (err) {
+    console.error(err);
+    bot.sendMessage(msg.chat.id, 'Error fetching subscriber count');
+  }
+});
 
 bot.onText(/\/start (.+)/, async (msg: any, match: any) => {
   const referrerId = match[1];
