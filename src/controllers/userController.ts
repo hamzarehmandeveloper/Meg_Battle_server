@@ -90,3 +90,41 @@ export const getUserReferrals = async (
     reply.status(500).send({ error: 'Failed to fetch referrals' });
   }
 };
+
+export async function deductCoinsFromUser(
+  request: FastifyRequest<{ Params: { id: number }; Body: { amount: number } }>,
+  reply: FastifyReply
+) {
+  try {
+    const { id } = request.params;
+    const { amount } = request.body;
+
+    if (amount <= 0) {
+      return reply
+        .status(400)
+        .send({ error: 'Amount to deduct must be greater than zero' });
+    }
+
+    const user = await User.findOne({ $or: [{ id }] });
+
+    if (!user) {
+      return reply.status(404).send({ error: 'User not found' });
+    }
+
+    if (!user.coins) {
+      return reply.status(400).send({ error: 'User has no coins' });
+    }
+
+    if (user?.coins < amount) {
+      return reply.status(400).send({ error: 'Insufficient coins' });
+    }
+
+    user.coins = (user.coins ?? 0) - amount;
+    await user.save();
+
+    reply.status(200).send({ message: 'Coins deducted successfully', user });
+  } catch (error) {
+    console.error(error);
+    reply.status(500).send({ error: 'Internal server error' });
+  }
+}

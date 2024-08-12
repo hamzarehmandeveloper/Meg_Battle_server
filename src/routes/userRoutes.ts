@@ -1,11 +1,13 @@
 import { FastifyInstance } from 'fastify';
 import {
   addCoinsToUser,
+  deductCoinsFromUser,
   getUserReferrals,
   registerUser,
 } from '../controllers/userController';
 import {
   addCoinsSchema,
+  coinsDeductSchema,
   getUserReferralsSchema,
   registerUserSchema,
 } from '../schemas/userSchema';
@@ -49,6 +51,18 @@ export default function userRoutes(
       },
     },
     getUserReferrals
+  );
+
+  fastify.post(
+    '/deduct-coins/:id',
+    {
+      schema: coinsDeductSchema,
+      onRequest: (request, reply, done) => {
+        reply.header('Access-Control-Allow-Origin', '*');
+        done();
+      },
+    },
+    deductCoinsFromUser
   );
 
   done();
