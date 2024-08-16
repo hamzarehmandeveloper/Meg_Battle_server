@@ -5,6 +5,7 @@ import { connectDB, getClient } from './database/db';
 import cors from '@fastify/cors';
 import TelegramBot from 'node-telegram-bot-api';
 import { User } from './models/userModel';
+import userCardRoutes from './routes/userCardRoutes';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ server.get('/', async (request, reply) => {
 });
 
 server.register(userRoutes, { prefix: '/api/users' });
+server.register(userCardRoutes, { prefix: '/api/user-cards' });
 
 bot.onText(/\/start/, (msg) => {
   bot.sendMessage(
