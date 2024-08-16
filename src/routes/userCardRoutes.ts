@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { purchaseCard } from '../controllers/userCardController';
+import { getUserCards, purchaseCard } from '../controllers/userCardController';
 
 export default async function userCardRoutes(
   fastify: FastifyInstance,
@@ -7,4 +7,5 @@ export default async function userCardRoutes(
   done: () => void
 ) {
   fastify.post('/purchase-card/:id', purchaseCard);
+  fastify.get('/cards', getUserCards);
 }

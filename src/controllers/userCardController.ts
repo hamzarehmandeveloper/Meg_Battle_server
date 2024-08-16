@@ -55,3 +55,29 @@ export const purchaseCard = async (
       .send({ message: 'Failed to purchase card', error: error.message });
   }
 };
+
+export const getUserCards = async (
+  request: FastifyRequest<{
+    Querystring: { userId: string };
+  }>,
+  reply: FastifyReply
+) => {
+  try {
+    const { userId } = request.query;
+
+    if (!userId) {
+      return reply.status(400).send({ error: 'userId is required' });
+    }
+
+    const userCards = await UserCard.find({ userId }).lean();
+
+    if (!userCards || userCards.length === 0) {
+      return reply.status(404).send({ error: 'No cards found for this user' });
+    }
+
+    reply.status(200).send(userCards);
+  } catch (error) {
+    console.error('Error fetching user cards:', error);
+    reply.status(500).send({ error: 'Internal Server Error' });
+  }
+};
