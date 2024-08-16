@@ -128,3 +128,31 @@ export async function deductCoinsFromUser(
     reply.status(500).send({ error: 'Internal server error' });
   }
 }
+
+export const increaseUserResources = async (
+  req: FastifyRequest<{ Body: { userId: number; amount: number } }>,
+  reply: FastifyReply
+) => {
+  const { userId, amount } = req.body;
+
+  if (typeof userId !== 'number' || typeof amount !== 'number' || amount <= 0) {
+    return reply.status(400).send({ error: 'Invalid input' });
+  }
+
+  try {
+    const user = await User.findOne({ id: userId });
+
+    if (!user) {
+      return reply.status(404).send({ error: 'User not found' });
+    }
+
+    user.resources = (user.resources ?? 0) + amount;
+
+    await user.save();
+
+    return reply.send({ success: true, resources: user.resources });
+  } catch (error) {
+    console.error('Error increasing user resources:', error);
+    return reply.status(500).send({ error: 'Internal server error' });
+  }
+};

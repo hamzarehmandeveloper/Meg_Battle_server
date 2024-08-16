@@ -3,6 +3,7 @@ import {
   addCoinsToUser,
   deductCoinsFromUser,
   getUserReferrals,
+  increaseUserResources,
   registerUser,
 } from '../controllers/userController';
 import {
@@ -64,6 +65,8 @@ export default function userRoutes(
     },
     deductCoinsFromUser
   );
+
+  fastify.post('/increase-resources', increaseUserResources);
 
   done();
 }

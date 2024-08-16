@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   coins: { type: Number, required: false, default: 0 },
   referredBy: { type: String },
   referrals: { type: [String], default: [] },
+  resources: { type: Number, required: false, default: 0 },
 });
 const User = mongoose.model('Users', userSchema, 'Users');
 export { User };
