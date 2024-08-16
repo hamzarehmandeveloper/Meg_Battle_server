@@ -130,14 +130,10 @@ export async function deductCoinsFromUser(
 }
 
 export const increaseUserResources = async (
-  req: FastifyRequest<{ Body: { userId: number; amount: number } }>,
+  req: FastifyRequest<{ Body: { userId: number; resources: number } }>,
   reply: FastifyReply
 ) => {
-  const { userId, amount } = req.body;
-
-  if (typeof userId !== 'number' || typeof amount !== 'number' || amount <= 0) {
-    return reply.status(400).send({ error: 'Invalid input' });
-  }
+  const { userId, resources } = req.body;
 
   try {
     const user = await User.findOne({ id: userId });
@@ -146,7 +142,7 @@ export const increaseUserResources = async (
       return reply.status(404).send({ error: 'User not found' });
     }
 
-    user.resources = (user.resources ?? 0) + amount;
+    user.resources = resources;
 
     await user.save();
 
