@@ -6,11 +6,17 @@ import { calculateProfitPerHour } from '../helper';
 export const purchaseCard = async (
   req: FastifyRequest<{
     params: { id: string };
-    Body: { userId: number; tab: string; cardName: string; cardCost: number };
+    Body: {
+      userId: number;
+      tab: string;
+      cardName: string;
+      cardId: number;
+      cardCost: number;
+    };
   }>,
   reply: FastifyReply
 ) => {
-  const { userId, tab, cardName, cardCost } = req.body;
+  const { userId, tab, cardName, cardId, cardCost } = req.body;
 
   try {
     const user = await User.findOne({ id: userId });
@@ -23,6 +29,7 @@ export const purchaseCard = async (
       userId: user.id,
       tab,
       name: cardName,
+      cardId,
     });
 
     if (!userCard) {
@@ -30,6 +37,7 @@ export const purchaseCard = async (
         userId: user.id,
         tab,
         name: cardName,
+        cardId,
         level: 1,
         cost: cardCost,
         profitPerHour: calculateProfitPerHour(cardCost),
