@@ -124,7 +124,7 @@ async function trackReferral(
   language_code: string
 ) {
   const referrer = await User.findOne({ id: referrerId });
-  const newUser = await User.findOne({ id: newUserId });
+  const newUser: any = await User.findOne({ id: newUserId });
 
   if (!newUser) {
     const newUserData = new User({
@@ -157,7 +157,7 @@ async function trackReferral(
       );
       bot.sendMessage(
         referrerId,
-        'You have received 5000 points for referring a new user!'
+        `Good news! Your Telegram friend ${newUser?.first_name} just signed up. You earned 5000 extra tokens for this. Keep doing good job!`
       );
     } else {
       bot.sendMessage(referrerId, 'You have already referred this user.');
